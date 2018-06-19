@@ -17,4 +17,6 @@ TODOs & Nice-to-haves
 
 - figure out how to handle handle `getEntryForObject` in proxy-index
 
+- index configuration: default overrides, templates
+
 - more tests
