@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from collective.es.index.interfaces import IElasticSearchClient
 from plone import api
+from plone.api.exc import CannotGetPortalError
 from zope.component import queryUtility
 
-import logging
 import threading
 
-
-logger = logging.getLogger(__name__)
 
 INDEX = 'plone'
 
@@ -34,15 +32,28 @@ def get_ingest_client():
         return es.ingest
 
 
-def remove_index():
+def get_configuration():
+    """Get zope.conf elasticsearch configuration
+    """
+    es = _get_elastic_search_client()
+    if es:
+        return es.zope_configuration
+
+
+def remove_index(index=INDEX):
     es = get_ingest_client()
-    if es.indices.exists(index=INDEX):
-        es.indices.delete(index=INDEX)
+    if es.indices.exists(index=index):
+        es.indices.delete(index=index)
 
 
 def index_name():
-    portal = api.portal.get()
-    return 'plone_{0}'.format(portal.getId()).lower()
+    try:
+        portal = api.portal.get()
+        name = 'plone_{0}'.format(portal.getId()).lower()
+    except CannotGetPortalError:
+        # portal is being unindexed
+        name = None
+    return name
 
 
 class _QueryBlocker(object):
