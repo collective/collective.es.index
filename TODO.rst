@@ -20,3 +20,5 @@ TODOs & Nice-to-haves
 - index configuration: default overrides, templates
 
 - more tests
+
+- how to handle schema changes
