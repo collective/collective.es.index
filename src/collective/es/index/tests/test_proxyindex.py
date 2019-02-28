@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
+from __future__ import absolute_import
 from collective.es.index.testing import COLLECTIVE_ES_INDEX_INTEGRATION_TESTING
 
 import unittest

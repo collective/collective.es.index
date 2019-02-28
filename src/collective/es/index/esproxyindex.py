@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from AccessControl import ClassSecurityInfo
 from AccessControl.requestmethod import postonly
 from BTrees.IIBTree import IIBTree
 from collective.es.index.utils import get_query_client
 from collective.es.index.utils import index_name
 from collective.es.index.utils import query_blocker
-from Globals import InitializeClass
+from App.class_init import InitializeClass
 from OFS.SimpleItem import SimpleItem
 from Products.GenericSetup.interfaces import ISetupEnviron
 from Products.GenericSetup.utils import NodeAdapterBase

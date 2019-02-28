@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from Acquisition import aq_base
 from Acquisition import aq_parent
 from collective.es.index.interfaces import IElasticSearchIndexQueueProcessor
@@ -24,6 +25,7 @@ import collections
 import datetime
 import logging
 import uuid
+import six
 
 
 logger = logging.getLogger('collective.es.index')
@@ -71,7 +73,7 @@ MAPPING_TYPE_MAP = collections.OrderedDict([
     (int, {'type': 'long'}),
     (float, {'type': 'double'}),
     (datetime.datetime, {'type': 'date'}),
-    (basestring, {'type': 'text'}),
+    (six.string_types, {'type': 'text'}),
     (dict, {'type': 'object'}),
 ])
 
@@ -135,10 +137,10 @@ class ElasticSearchIndexQueueProcessor(object):
                 new_map[name] = {
                     'type': 'nested',
                     'properties': {
-                        'content': MAPPING_TYPE_MAP[basestring],
+                        'content': MAPPING_TYPE_MAP[six.string_types],
                         'content_length': MAPPING_TYPE_MAP[int],
-                        'content_type': MAPPING_TYPE_MAP[basestring],
-                        'language': MAPPING_TYPE_MAP[basestring],
+                        'content_type': MAPPING_TYPE_MAP[six.string_types],
+                        'language': MAPPING_TYPE_MAP[six.string_types],
                     },
                 }
         if not new_map:

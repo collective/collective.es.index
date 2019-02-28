@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from collective.es.index.interfaces import IElasticSearchClient
 from elasticsearch import Elasticsearch
 from zope.component import provideUtility
 from zope.interface import directlyProvides
+from six.moves import zip
 
 
 class ElasticSearchIngressConfFactory(object):
@@ -13,7 +15,7 @@ class ElasticSearchIngressConfFactory(object):
     def _client_dict(self, value):
         if not value:
             value = [('127.0.0.1', '9200')]
-        return [dict(zip(['host', 'port'], el)) for el in value]
+        return [dict(list(zip(['host', 'port'], el))) for el in value]
 
     def prepare(self, *args, **kwargs):
         self.query = self._client_dict(self.section.query)

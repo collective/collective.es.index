@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from collective.es.index.interfaces import IElasticSearchClient
 from plone import api
 from zope.component import queryUtility
