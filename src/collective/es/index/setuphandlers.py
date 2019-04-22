@@ -27,3 +27,12 @@ def post_install(context):
 def uninstall(context):
     """Uninstall script"""
     # Do something at the end of the uninstallation of this package.
+
+
+def upgrade_to_1001(portal_setup):
+    for step in ('plone.app.registry',
+                 'controlpanel',):
+        portal_setup.runImportStepFromProfile(
+            'profile-collective.es.index:default',
+            step,
+            run_dependencies=False)

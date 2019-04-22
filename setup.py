@@ -4,6 +4,7 @@ from setuptools import setup
 
 
 setup(
+    name='collective.es.index',
     # zest releaser does not change cfg file.
     version='1.0a2.dev0',
 
