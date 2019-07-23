@@ -23,6 +23,7 @@ import base64
 import collections
 import datetime
 import logging
+import time
 import uuid
 
 
@@ -212,6 +213,7 @@ class ElasticSearchIndexQueueProcessor(object):
         data['rid'] = cat.getrid(path)
 
     def index(self, obj, attributes=None):
+        start = time.time()
         query_blocker.block()
         es = get_ingest_client()
         if es is None:
@@ -239,6 +241,7 @@ class ElasticSearchIndexQueueProcessor(object):
                 ),
             )
             return
+        logging.info("TOOK after serializing: {0:2.3f}".format(time.time() - start))
         self._reduce_data(data)
         self._expand_rid(obj, data)
         self._expand_binary_data(obj, data)
@@ -261,6 +264,7 @@ class ElasticSearchIndexQueueProcessor(object):
         else:
             # es_kwargs['parent'] = api.content.get_uuid(parent)
             pass
+        logging.info("TOOK after preprocessing: {0:2.3f}".format(time.time() - start))
         try:
             es.index(**es_kwargs)
         except Exception:
@@ -271,6 +275,7 @@ class ElasticSearchIndexQueueProcessor(object):
                 ),
             )
         query_blocker.unblock()
+        logging.info("TOOK overall: {0:2.3f}".format(time.time() - start))
 
     def reindex(self, obj, attributes=None, update_metadata=1):
         self.index(obj, attributes)
