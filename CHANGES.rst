@@ -69,6 +69,8 @@ Changelog
 - Allow the index name to be configured in the zope config.
   [JL 2020-07-20]
 
+- Add package name to async task names.
+
 
 1.0a1 (git tag)
 ---------------

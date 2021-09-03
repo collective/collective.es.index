@@ -26,7 +26,7 @@ def extra_config(startup):
         es_servers[0].create()
 
 
-@task(name='indexer', autoretry_for=(POSKeyError, TransportError,),
+@task(name='collective.es.index.indexer', autoretry_for=(POSKeyError, TransportError,),
       retry_backoff=5)
 def index_content(path, url):
     logger.warning('Indexing {}'.format(path))
@@ -42,7 +42,7 @@ def index_content(path, url):
     es.index(**data)
 
 
-@task(name='unindexer')
+@task(name='collective.es.index.unindexer')
 def unindex_content(index, doc_type, uid, timeout):
     logger.warning('Unindexing {}'.format(uid))
     es = get_ingest_client()
