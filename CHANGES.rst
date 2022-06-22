@@ -71,6 +71,7 @@ Changelog
 
 - Add package name to async task names.
 
+- Allow customizations to index settings and mapping through adapters.
 
 1.0a1 (git tag)
 ---------------
