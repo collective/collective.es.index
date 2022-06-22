@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from Acquisition import aq_parent
+from collective.es.index.interfaces import IAdditionalESIndexSettings
 from collective.es.index.interfaces import IElasticSearchIndexQueueProcessor
+from collective.es.index.interfaces import IESIndexMapping
 from collective.es.index.mappings import INITIAL_MAPPING
 from collective.es.index.utils import get_configuration
 from collective.es.index.utils import get_ingest_client
@@ -21,6 +23,7 @@ from pprint import pformat
 from zope.annotation import IAnnotations
 from zope.component import ComponentLookupError
 from zope.component import getMultiAdapter
+from zope.component import queryAdapter
 from zope.globalrequest import getRequest
 from zope.interface import implementer
 
@@ -113,7 +116,12 @@ class ElasticSearchIndexQueueProcessor(object):
         return 'attachment_ingest_{0}'.format(index_name())
 
     def _create_index(self, es):
-        es.indices.create(index=index_name())
+        portal = api.portal.get()
+        adapter = queryAdapter(portal, interface=IAdditionalESIndexSettings)
+        if adapter is None:
+            es.indices.create(index=index_name())
+        else:
+            es.indices.create(index=index_name(), body=adapter())
         self._setup_mapping(es)
 
     @ram.cache(lambda *args: index_name())
@@ -146,10 +154,15 @@ class ElasticSearchIndexQueueProcessor(object):
         return mapping
 
     def _setup_mapping(self, es):
+        adapter = queryAdapter(portal, interface=IESIndexMapping)
+        if adapter is None:
+            mapping = INITIAL_MAPPING
+        else:
+            mapping = adapter()
         es.indices.put_mapping(
             doc_type='content',
             index=index_name(),
-            body=INITIAL_MAPPING,
+            body=mapping,
         )
         request = getRequest()
         setattr(request, CACHE_ATTRIBUTE, None)

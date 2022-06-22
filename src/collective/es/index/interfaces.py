@@ -33,3 +33,15 @@ class ICollectiveESIndexSettings(Interface):
             default=u'The name of the elasticsearch index used for the site.'
         ),
     )
+
+
+class IAdditionalESIndexSettings(Interface):
+    """ Interface for registering an adapter that returns a dict with settings
+        to pass as the body during index creation.
+    """
+
+
+class IESIndexMapping(Interface):
+    """ Interface for registering an adapter that returns a mapping dict to be
+        used instead of mappings.INITIAL_MAPPING
+    """
