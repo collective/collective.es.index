@@ -154,6 +154,7 @@ class ElasticSearchIndexQueueProcessor(object):
         return mapping
 
     def _setup_mapping(self, es):
+        portal = api.portal.get()
         adapter = queryAdapter(portal, interface=IESIndexMapping)
         if adapter is None:
             mapping = INITIAL_MAPPING
