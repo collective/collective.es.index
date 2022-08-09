@@ -75,6 +75,8 @@ Changelog
 
 - Cleanup and reformat INITIAL_MAPPING
 
+- Don't index fields that aren't in the mapping.
+
 
 1.0a1 (git tag)
 ---------------

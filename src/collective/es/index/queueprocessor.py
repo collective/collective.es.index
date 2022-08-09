@@ -205,6 +205,17 @@ class ElasticSearchIndexQueueProcessor(object):
         for key in KEYS_TO_REMOVE:
             if key in data:
                 del data[key]
+        portal = api.portal.get()
+        adapter = queryAdapter(portal, interface=IESIndexMapping)
+        if adapter is None:
+            mapping = INITIAL_MAPPING
+        else:
+            mapping = adapter()
+        properties = mapping['content']['properties']
+        data_keys = [k for k in data.keys()]
+        for k in data_keys:
+            if k not in properties:
+                del data[k]
 
     def _iterate_binary_fields(self, obj, data):
         for record in INGEST_PIPELINES['processors']:
