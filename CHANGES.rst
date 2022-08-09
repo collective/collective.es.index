@@ -73,6 +73,9 @@ Changelog
 
 - Allow customizations to index settings and mapping through adapters.
 
+- Cleanup and reformat INITIAL_MAPPING
+
+
 1.0a1 (git tag)
 ---------------
 
