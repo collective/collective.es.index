@@ -77,6 +77,8 @@ Changelog
 
 - Don't index fields that aren't in the mapping.
 
+- Don't index object if attributes are passed and SearchableText isn't included.
+
 
 1.0a1 (git tag)
 ---------------

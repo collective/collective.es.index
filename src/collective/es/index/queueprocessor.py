@@ -333,6 +333,8 @@ class ElasticSearchIndexQueueProcessor(object):
         return es_kwargs
 
     def index(self, obj, attributes=None):
+        if attributes and 'SearchableText' not in attributes:
+            return
         index = index_name()
         if index is None:
             # Not configured yet.
